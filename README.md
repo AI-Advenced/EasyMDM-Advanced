@@ -299,5 +299,5 @@ MIT License – see LICENSE file for details.
 ---
 
 **EasyMDM Advanced** – Making Master Data Management simple and powerful 🚀
-
+By #TIMSoftDZ
 ---
