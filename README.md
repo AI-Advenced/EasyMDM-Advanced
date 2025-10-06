@@ -1,316 +1,301 @@
-# EasyMDM Advanced - Flask Web Interface
+# EasyMDM Advanced
 
-A modern and intuitive web interface for EasyMDM Advanced, providing full master data management (MDM) capabilities with a complete user experience.
+**Enhanced Master Data Management (MDM) Package with Multi-Database Support**
 
-## 🌟 Features
-
-### Modern User Interface
-
-* **Responsive Design**: Works on all screens (desktop, tablet, mobile)
-* **Drag & Drop**: Upload CSV files easily by dragging and dropping
-* **Smooth Animations**: CSS transitions and animations for a pleasant experience
-* **Modern Theme**: Gradients and attractive visual elements
-
-### Complete MDM Features
-
-* **Interactive Configuration**: Configure MDM parameters via graphical interface
-* **5 Predefined Examples**: Full demonstrations of EasyMDM capabilities
-* **Real-Time Monitoring**: Task progress with visual progress bar
-* **Detailed Logs**: Live execution logs with terminal-style display
-
-### Data Management
-
-* **Automatic CSV Analysis**: Auto-detect columns and generate statistics
-* **File Validation**: Check format and integrity
-* **Sample Generation**: Auto-create test data
-* **Results Export**: Download processed files
+EasyMDM Advanced is a comprehensive Python package for Master Data Management (MDM), record linkage, and data deduplication. It provides advanced algorithms for similarity matching, flexible survivorship rules, and support for multiple database systems.
 
 ---
 
-## 🚀 Installation and Launch
+## 🚀 Key Features
 
-### Method 1: Automatic Launch (Recommended)
+### Multi-Database Support
+
+* **PostgreSQL** – Full support with connection pooling and optimization
+* **SQL Server** – Native support via ODBC drivers
+* **SQLite** – Lightweight embedded database support
+* **DuckDB** – High-performance analytical database
+* **CSV Files** – Direct file processing with optimized performance
+
+### Advanced Similarity Algorithms
+
+* **Jaro-Winkler** – Optimized for names and short strings
+* **Levenshtein** – Edit distance with normalization
+* **Cosine Similarity** – TF-IDF based for longer text
+* **Jaccard** – Set-based similarity with n-grams
+* **Exact Match** – Optimized exact comparisons
+* **FuzzyWuzzy** – Multiple fuzzy matching variants
+
+### Intelligent Blocking Strategies
+
+* **Exact Blocking** – Traditional exact key matching
+* **Fuzzy Blocking** – Similarity-based candidate generation
+* **Sorted Neighborhood** – Sliding window approach
+* **RecordLinkage Integration** – Standard blocking methods
+
+### Flexible Clustering Algorithms
+
+* **Network-based** – Graph connectivity clustering (default)
+* **Hierarchical** – Distance-based hierarchical clustering
+* **DBSCAN** – Density-based clustering with noise detection
+
+### Advanced Survivorship Resolution
+
+* **Priority Rules** – Condition-based record selection
+* **Most Recent** – Date/timestamp-based resolution
+* **Source Priority** – Trust-based source ordering
+* **Longest String** – Length-based text selection
+* **Value-based** – Highest/lowest numeric values
+* **Threshold-based** – Conditional value selection
+* **Most Frequent** – Frequency-based resolution
+
+### Performance Optimization
+
+* **Parallel Processing** – Multi-core similarity computation
+* **Vectorized Operations** – NumPy/Pandas optimization
+* **Caching** – Intelligent similarity caching
+* **Batch Processing** – Memory-efficient large dataset handling
+* **Numba Integration** – JIT compilation for critical paths
+
+---
+
+## 📦 Installation
+
+### Prerequisites
 
 ```bash
-# Launch the app directly
-python run_app.py
+# Core dependencies
+pip install pandas numpy pyyaml networkx
+
+# Similarity and record linkage
+pip install recordlinkage fuzzywuzzy python-Levenshtein jellyfish textdistance
+
+# Database connectors
+pip install sqlalchemy psycopg2-binary pyodbc duckdb
+
+# Performance and ML
+pip install scikit-learn numba joblib
+
+# Optional: Rich UI and visualization
+pip install rich matplotlib seaborn plotly
 ```
 
-The script will automatically:
-
-* Check and install dependencies
-* Create necessary folders
-* Launch the application
-* Open the browser automatically
-
-### Method 2: Manual Installation
+### Install EasyMDM Advanced
 
 ```bash
-# 1. Install dependencies
-pip install -r requirements_flask.txt
+# From source
+git clone https://github.com/yourusername/easymdm-advanced.git
+cd easymdm-advanced
+pip install -e .
 
-# 2. Launch the app
-python app.py
+# Or from PyPI (when available)
+pip install easymdm-advanced
 ```
 
-### Method 3: Virtual Environment
+---
+
+## 🎯 Quick Start
+
+### 1. Create Configuration
 
 ```bash
-# 1. Create virtual environment
-python -m venv venv
+# PostgreSQL example
+easymdm create-config --output config.yaml --database-type postgresql
 
-# 2. Activate environment
-# Windows:
-venv\Scripts\activate
-# Linux/Mac:
-source venv/bin/activate
-
-# 3. Install dependencies
-pip install -r requirements_flask.txt
-
-# 4. Launch the app
-python app.py
+# CSV example
+easymdm create-config --output config.yaml --database-type csv --file-path data.csv
 ```
 
----
+### 2. Test Connection
 
-## 📱 Usage
-
-### 1. Start
-
-Application available at: `http://localhost:5000`
-
-### 2. Upload Data
-
-* **Drag & Drop**: Drag your CSV file into the designated area
-* **Manual Select**: Click the area to open the file selector
-* **Auto Sample**: Click "Create Sample" for test data
-
-### 3. MDM Configuration
-
-Once the file is loaded, configure:
-
-* **Blocking Columns**: Fields used to group records
-* **Blocking Method**: Exact or Fuzzy
-* **Thresholds**: Review and auto-merge
-* **Output Folder**: Directory for results
-
-### 4. Predefined Examples
-
-#### Example 1: Basic CSV
-
-* Process CSV with minimal configuration
-* Demonstrates basic features
-* Simulated French customer data
-
-#### Example 2: Advanced Similarity
-
-* Test and compare similarity algorithms
-* Methods: Jaro-Winkler, Levenshtein, Exact, Cosine
-* Column-specific recommendations
-
-#### Example 3: PostgreSQL Configuration
-
-* Advanced database setup
-* Connection parameters and optimization
-* Complex survivorship rules
-
-#### Example 4: Performance Optimization
-
-* Optimized processing for large volumes
-* Parallelization and memory settings
-* Detailed performance metrics
-
-#### Example 5: Custom Survivorship
-
-* Advanced survivorship strategies
-* Multiple priority conditions
-* Intelligent conflict resolution
-
-### 5. Tracking & Results
-
-* **Progress Bar**: Visual processing status
-* **Real-Time Logs**: Detailed process messages
-* **Statistics**: Full processing metrics
-* **Download**: Export generated files
-
----
-
-## 🏗️ Architecture
-
-### File Structure
-
-```
-easymdm-flask/
-│
-├── app.py                 # Main Flask app
-├── run_app.py             # Auto-launch script
-├── requirements_flask.txt # Python dependencies
-├── README.md              # Documentation
-│
-├── templates/
-│   └── index.html         # Main user interface
-│
-├── static/
-│   └── css/
-│       └── custom.css     # Custom styles
-│
-├── uploads/               # Uploaded files (auto-created)
-├── outputs/               # Generated results (auto-created)
-└── configs/               # Saved configurations (auto-created)
+```bash
+easymdm test-connection --config config.yaml --sample-size 10
+easymdm validate-config --config config.yaml
 ```
 
-### Technologies Used
+### 3. Run MDM Processing
 
-* **Backend**: Flask 2.3+ (Python)
-* **Frontend**: Bootstrap 5.3, HTML5, CSS3, JavaScript ES6
-* **UI/UX**: CSS animations, responsive design, Bootstrap icons
-* **Data Handling**: Pandas, NumPy for CSV processing
-* **Processing**: Threading for asynchronous tasks
+```bash
+easymdm process --config config.yaml --output ./results --profile --test-config
+```
 
----
-
-## 🔧 Configuration
-
-### Environment Variables
+### 4. Python API Usage
 
 ```python
-# Flask configuration (in app.py)
-app.config['UPLOAD_FOLDER'] = 'uploads'
-app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # Max 50MB
-```
+from easymdm import MDMEngine, MDMConfig
 
-### Customizable Parameters
+# Load configuration
+config = MDMConfig.from_yaml('config.yaml')
 
-* **Port**: Default 5000, changeable in `run_app.py`
-* **Host**: Default 127.0.0.1, changeable for network access
-* **Max File Size**: 50MB per file, configurable
-* **Directories**: Custom paths for uploads/outputs
+# Create and run MDM engine
+engine = MDMEngine(config)
 
----
+# Test configuration
+test_results = engine.test_configuration()
+print("Configuration test:", all(test_results.values()))
 
-## 🎨 Customization
+# Profile input data
+profile = engine.get_data_profile()
+print(f"Input records: {profile['total_records']:,}")
 
-### User Interface
-
-All custom styles in `static/css/custom.css`:
-
-* Colors & gradients
-* Animations & transitions
-* Responsive design
-* Custom UI components
-
-### Adding Features
-
-1. **Flask Route**: Add in `app.py`
-
-```python
-@app.route('/new_feature')
-def new_feature():
-    # Processing logic
-    return jsonify({'success': True})
-```
-
-2. **Interface**: Update `templates/index.html`
-3. **Styles**: Add CSS in `static/css/custom.css`
-
----
-
-## 📊 Monitoring & Logs
-
-### Task Tracking
-
-* **Real-Time Status**: Progress, status, logs
-* **Temporary Storage**: Global variables for tracking
-* **Auto Cleanup**: Memory management for completed tasks
-
-### Execution Logs
-
-* **Terminal Style**: Console-like display with colors
-* **Timestamps**: Each message is time-stamped
-* **Auto Scroll**: Shows latest messages
-* **History**: Keeps last 50 logs per task
-
----
-
-## 🔒 Security
-
-### File Uploads
-
-* **Validated Extensions**: Only `.csv` allowed
-* **Secure Names**: Using `secure_filename()`
-* **Max Size**: 50MB per file
-* **Timestamped Names**: Prevent conflicts
-
-### Data Validation
-
-* **CSV Format**: Checks structure & encoding
-* **Parameters**: Server-side validation
-* **Paths**: Directory traversal protection
-
----
-
-## 🚀 Deployment
-
-### Development
-
-```bash
-python run_app.py
-# or
-python app.py
-```
-
-### Production
-
-Use a WSGI server like Gunicorn:
-
-```bash
-# Install
-pip install gunicorn
-
-# Run
-gunicorn -w 4 -b 0.0.0.0:8000 app:app
-```
-
-### Docker (Optional)
-
-```dockerfile
-FROM python:3.9-slim
-WORKDIR /app
-COPY requirements_flask.txt .
-RUN pip install -r requirements_flask.txt
-COPY . .
-EXPOSE 5000
-CMD ["python", "app.py"]
+# Execute MDM processing
+result = engine.process()
+print(f"Golden records created: {len(result.golden_records):,}")
+print(f"Processing time: {result.execution_time:.2f} seconds")
+print(f"Output files: {result.output_files}")
 ```
 
 ---
 
-## 📝 License
+## ⚙️ Configuration Examples
 
-MIT License. See LICENSE file for details.
+### Database Sources
 
-## 🤝 Contribution
+**PostgreSQL**
 
-Contributions welcome! To contribute:
+```yaml
+source:
+  type: postgresql
+  host: localhost
+  port: 5432
+  database: mydb
+  username: user
+  password: password
+  schema: public
+  table: customers
+```
 
-1. Fork the project
-2. Create feature branch: `git checkout -b feature/new-feature`
-3. Commit changes: `git commit -am 'Add new feature'`
-4. Push branch: `git push origin feature/new-feature`
-5. Create a Pull Request
+**SQL Server**
 
-## 📞 Support
+```yaml
+source:
+  type: sqlserver
+  host: localhost
+  port: 1433
+  database: CustomerDB
+  username: user
+  password: password
+  schema: dbo
+  table: Customers
+  options:
+    driver: "ODBC Driver 17 for SQL Server"
+```
 
-For questions or issues:
+**CSV Files**
 
-* Open an issue on GitHub
-* Check EasyMDM documentation
-* Review error logs in the console
+```yaml
+source:
+  type: csv
+  file_path: ./data/customers.csv
+  options:
+    encoding: utf-8
+    delimiter: ","
+    na_values: ["", "NULL", "N/A"]
+```
 
 ---
 
-**EasyMDM Advanced Flask** – Modern web interface for master data management 🚀
+### Similarity Configuration
+
+```yaml
+similarity:
+  - column: first_name
+    method: jarowinkler
+    weight: 2.0
+    threshold: 0.7
+    options:
+      lowercase: true
+```
+
+### Survivorship Rules
+
+```yaml
+survivorship:
+  rules:
+    - column: last_updated
+      strategy: most_recent
+```
+
+### Priority Conditions
+
+```yaml
+priority_rule:
+  conditions:
+    - column: is_verified
+      value: true
+      priority: 1
+```
 
 ---
 
+## 🔧 Advanced Usage
+
+* **Custom Similarity Functions** – define your own matcher class
+* **Batch Processing** – handle large datasets efficiently with multiprocessing
+* **Performance Benchmarking** – test similarity methods and blocking strategies
+
+---
+
+## 📊 Output Files
+
+1. `golden_records_TIMESTAMP.csv` – Deduplicated golden records
+2. `review_pairs_TIMESTAMP.csv` – Pairs for manual review
+3. `processing_summary_TIMESTAMP.txt` – Human-readable summary
+4. `detailed_stats_TIMESTAMP.json` – Machine-readable statistics
+
+---
+
+## 🚀 Optimization
+
+* **Memory**: Chunked processing, vectorized operations, caching
+* **CPU**: Parallel processing, Numba JIT, batch operations
+* **I/O**: Connection pooling, bulk read/write, compression
+
+---
+
+## 🔍 Troubleshooting
+
+* Database connection errors → test connection and check drivers
+* Memory issues → reduce batch size, enable chunking
+* Slow similarity → benchmark methods, optimize blocking
+
+---
+
+## 📈 Comparison to Original EasyMDM
+
+| Feature      | Original            | Advanced                                    |
+| ------------ | ------------------- | ------------------------------------------- |
+| Databases    | CSV, SQLite, DuckDB | + PostgreSQL, SQL Server                    |
+| Similarity   | Basic               | + Cosine, Jaccard, Fuzzy variants           |
+| Blocking     | Fuzzy only          | + Exact, Sorted Neighborhood, RecordLinkage |
+| Clustering   | Network only        | + Hierarchical, DBSCAN                      |
+| Survivorship | Basic               | + 8 advanced strategies                     |
+| Performance  | Single-thread       | Multi-core, Numba JIT, vectorized           |
+| CLI          | Basic               | Rich UI, comprehensive commands             |
+| Output       | CSV only            | + Review pairs, stats, multiple formats     |
+| Memory       | Load all            | + Chunking, streaming, optimization         |
+
+---
+
+## 🤝 Contributing
+
+Fork, create a feature branch, commit, push, and open a Pull Request. Use development mode (`pip install -e ".[dev]"`) and run tests with `pytest`.
+
+---
+
+## 📄 License
+
+MIT License – see LICENSE file for details.
+
+## 🆘 Support
+
+* Documentation: [ReadTheDocs](https://easymdm-advanced.readthedocs.io)
+* GitHub Issues & Discussions
+* Email: [support@easymdm-advanced.com](mailto:support@easymdm-advanced.com)
+
+---
+
+**EasyMDM Advanced** – Making Master Data Management simple and powerful 🚀
+
+---
+
+Do you want me to do that?
