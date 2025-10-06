@@ -4,6 +4,10 @@
 
 EasyMDM Advanced is a comprehensive Python package for Master Data Management (MDM), record linkage, and data deduplication. It provides advanced algorithms for similarity matching, flexible survivorship rules, and support for multiple database systems.
 
+
+
+<img width="1216" height="864" alt="image" src="https://github.com/user-attachments/assets/b894ebb2-ce88-4a6a-bb81-0f52231dda29" />
+
 ---
 
 ## 🚀 Key Features
