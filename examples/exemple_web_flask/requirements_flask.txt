@@ -1,0 +1,18 @@
+# Requirements pour l'application Flask EasyMDM
+# Installez avec: pip install -r requirements_flask.txt
+
+Flask>=2.3.0
+pandas>=1.3.0
+numpy>=1.21.0
+numba>=0.56.0
+scikit-learn>=1.0.0
+Levenshtein>=0.20.0
+fuzzywuzzy>=0.18.0
+python-Levenshtein>=0.12.0
+Werkzeug>=2.3.0
+
+# Dépendances optionnelles pour les bases de données
+# psycopg2-binary>=2.9.0  # Pour PostgreSQL
+# pymongo>=4.0.0  # Pour MongoDB
+# sqlalchemy>=1.4.0  # Pour les ORM de base de données
+# openpyxl>=3.0.0  # Pour les fichiers Excel

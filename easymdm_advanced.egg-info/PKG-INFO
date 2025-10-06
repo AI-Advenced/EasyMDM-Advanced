@@ -1,0 +1,482 @@
+Metadata-Version: 2.4
+Name: easymdm-advanced
+Version: 2.0.0
+Summary: Advanced Master Data Management package with multi-database support
+Home-page: https://github.com/example/easymdm-advanced
+Author: MDM Team
+Author-email: mdm@example.com
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Database
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: pandas>=1.5.0
+Requires-Dist: numpy>=1.21.0
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: networkx>=2.8
+Requires-Dist: recordlinkage>=0.15.0
+Requires-Dist: fuzzywuzzy>=0.18.0
+Requires-Dist: python-Levenshtein>=0.12.2
+Requires-Dist: jellyfish>=0.9.0
+Requires-Dist: textdistance>=4.5.0
+Requires-Dist: sqlalchemy>=1.4.0
+Requires-Dist: psycopg2-binary>=2.9.0
+Requires-Dist: pyodbc>=4.0.30
+Requires-Dist: duckdb>=0.8.0
+Requires-Dist: tqdm>=4.64.0
+Requires-Dist: joblib>=1.2.0
+Requires-Dist: numba>=0.56.0
+Requires-Dist: scikit-learn>=1.1.0
+Requires-Dist: cerberus>=1.3.4
+Requires-Dist: jsonschema>=4.17.0
+Requires-Dist: colorlog>=6.7.0
+Requires-Dist: rich>=13.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: black>=22.0.0; extra == "dev"
+Requires-Dist: flake8>=5.0.0; extra == "dev"
+Requires-Dist: mypy>=0.991; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: sphinx>=5.0.0; extra == "docs"
+Requires-Dist: sphinx-rtd-theme>=1.2.0; extra == "docs"
+Provides-Extra: visualization
+Requires-Dist: matplotlib>=3.5.0; extra == "visualization"
+Requires-Dist: seaborn>=0.11.0; extra == "visualization"
+Requires-Dist: plotly>=5.11.0; extra == "visualization"
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# EasyMDM Advanced
+
+**Enhanced Master Data Management Package with Multi-Database Support**
+
+EasyMDM Advanced is a comprehensive Python package for Master Data Management (MDM), record linkage, and data deduplication. It provides advanced algorithms for similarity matching, flexible survivorship rules, and support for multiple database systems.
+
+## 🚀 Key Features
+
+### **Multi-Database Support**
+- **PostgreSQL** - Full support with connection pooling and optimization
+- **SQL Server** - Native support with ODBC drivers
+- **SQLite** - Lightweight embedded database support  
+- **DuckDB** - High-performance analytical database
+- **CSV Files** - Direct file processing with optimization
+
+### **Advanced Similarity Algorithms**
+- **Jaro-Winkler** - Optimized for names and short strings
+- **Levenshtein** - Edit distance with normalization
+- **Cosine Similarity** - TF-IDF based for longer text
+- **Jaccard** - Set-based similarity with n-grams
+- **Exact Match** - Optimized exact comparisons
+- **FuzzyWuzzy** - Multiple fuzzy matching variants
+
+### **Intelligent Blocking Strategies**
+- **Exact Blocking** - Traditional exact key matching
+- **Fuzzy Blocking** - Similarity-based candidate generation
+- **Sorted Neighborhood** - Sliding window approach
+- **RecordLinkage Integration** - Standard blocking methods
+
+### **Flexible Clustering Algorithms**
+- **Network-based** - Graph connectivity clustering (default)
+- **Hierarchical** - Distance-based hierarchical clustering  
+- **DBSCAN** - Density-based clustering with noise detection
+
+### **Advanced Survivorship Resolution**
+- **Priority Rules** - Condition-based record selection
+- **Most Recent** - Date/timestamp-based resolution
+- **Source Priority** - Trust-based source ordering
+- **Longest String** - Length-based text selection
+- **Value-based** - Highest/lowest numeric values
+- **Threshold-based** - Conditional value selection
+- **Most Frequent** - Frequency-based resolution
+
+### **Performance Optimization**
+- **Parallel Processing** - Multi-core similarity computation
+- **Vectorized Operations** - NumPy/Pandas optimization
+- **Caching** - Intelligent similarity caching
+- **Batch Processing** - Memory-efficient large dataset handling
+- **Numba Integration** - JIT compilation for critical paths
+
+## 📦 Installation
+
+### Prerequisites
+
+```bash
+# Core dependencies
+pip install pandas numpy pyyaml networkx
+
+# Similarity and record linkage
+pip install recordlinkage fuzzywuzzy python-Levenshtein jellyfish textdistance
+
+# Database connectors
+pip install sqlalchemy psycopg2-binary pyodbc duckdb
+
+# Performance and ML
+pip install scikit-learn numba joblib
+
+# Optional: Rich UI and visualization
+pip install rich matplotlib seaborn plotly
+```
+
+### Install EasyMDM Advanced
+
+```bash
+# From source
+git clone https://github.com/yourusername/easymdm-advanced.git
+cd easymdm-advanced
+pip install -e .
+
+# Or install from PyPI (when published)
+pip install easymdm-advanced
+```
+
+## 🎯 Quick Start
+
+### 1. Create Configuration
+
+```bash
+# Create a sample configuration for PostgreSQL
+easymdm create-config --output config.yaml --database-type postgresql
+
+# Or for CSV files
+easymdm create-config --output config.yaml --database-type csv --file-path data.csv
+```
+
+### 2. Test Connection
+
+```bash
+# Test your database connection
+easymdm test-connection --config config.yaml --sample-size 10
+
+# Validate configuration
+easymdm validate-config --config config.yaml
+```
+
+### 3. Run MDM Processing
+
+```bash
+# Execute MDM with progress tracking and profiling
+easymdm process --config config.yaml --output ./results --profile --test-config
+```
+
+### 4. Python API Usage
+
+```python
+from easymdm import MDMEngine, MDMConfig
+
+# Load configuration
+config = MDMConfig.from_yaml('config.yaml')
+
+# Create and run MDM engine
+engine = MDMEngine(config)
+
+# Test configuration
+test_results = engine.test_configuration()
+print("Configuration test:", all(test_results.values()))
+
+# Profile input data
+profile = engine.get_data_profile()
+print(f"Input records: {profile['total_records']:,}")
+
+# Execute MDM processing
+result = engine.process()
+
+print(f"Golden records created: {len(result.golden_records):,}")
+print(f"Processing time: {result.execution_time:.2f} seconds")
+print(f"Output files: {result.output_files}")
+```
+
+## ⚙️ Configuration
+
+### Database Sources
+
+**PostgreSQL:**
+```yaml
+source:
+  type: postgresql
+  host: localhost
+  port: 5432
+  database: mydb
+  username: user
+  password: password
+  schema: public
+  table: customers
+```
+
+**SQL Server:**
+```yaml
+source:
+  type: sqlserver
+  host: localhost
+  port: 1433
+  database: CustomerDB
+  username: user
+  password: password
+  schema: dbo
+  table: Customers
+  options:
+    driver: "ODBC Driver 17 for SQL Server"
+```
+
+**CSV Files:**
+```yaml
+source:
+  type: csv
+  file_path: ./data/customers.csv
+  options:
+    encoding: utf-8
+    delimiter: ","
+    na_values: ["", "NULL", "N/A"]
+```
+
+### Similarity Configuration
+
+```yaml
+similarity:
+  - column: first_name
+    method: jarowinkler
+    weight: 2.0
+    threshold: 0.7
+    options:
+      lowercase: true
+
+  - column: address
+    method: cosine
+    weight: 1.5
+    threshold: 0.6
+    options:
+      ngram_range: 2
+
+  - column: phone
+    method: levenshtein
+    weight: 1.0
+    options:
+      remove_punctuation: true
+```
+
+### Survivorship Rules
+
+```yaml
+survivorship:
+  rules:
+    - column: last_updated
+      strategy: most_recent
+      
+    - column: data_source
+      strategy: source_priority
+      source_order: ["system1", "system2", "manual"]
+      
+    - column: address
+      strategy: longest_string
+      
+    - column: confidence_score
+      strategy: highest_value
+```
+
+### Priority Conditions
+
+```yaml
+priority_rule:
+  conditions:
+    - column: is_verified
+      value: true
+      priority: 1
+      
+    - column: quality_score
+      value: 100
+      priority: 2
+```
+
+## 🔧 Advanced Usage
+
+### Custom Similarity Functions
+
+```python
+from easymdm.similarity.matcher import BaseSimilarityFunction
+from easymdm.core.config import SimilarityConfig
+
+class CustomSimilarity(BaseSimilarityFunction):
+    def compute(self, str1: str, str2: str) -> float:
+        # Implement your custom logic
+        return similarity_score
+
+# Register and use
+config = SimilarityConfig(column='custom', method='custom')
+similarity_func = CustomSimilarity(config)
+```
+
+### Batch Processing for Large Datasets
+
+```python
+# Configure for large datasets
+config.batch_size = 50000
+config.use_multiprocessing = True
+config.n_jobs = -1  # Use all cores
+
+# Enable chunking for memory efficiency
+config.options['use_chunking'] = True
+config.options['chunk_size'] = 100000
+```
+
+### Performance Benchmarking
+
+```bash
+# Benchmark similarity methods
+easymdm benchmark --config config.yaml --type similarity --sample-size 1000
+
+# Benchmark blocking strategies  
+easymdm benchmark --config config.yaml --type blocking --sample-size 5000
+```
+
+## 📊 Output Files
+
+EasyMDM Advanced generates comprehensive output:
+
+1. **`golden_records_TIMESTAMP.csv`** - Final deduplicated golden records
+2. **`review_pairs_TIMESTAMP.csv`** - Pairs requiring manual review  
+3. **`processing_summary_TIMESTAMP.txt`** - Human-readable processing summary
+4. **`detailed_stats_TIMESTAMP.json`** - Machine-readable statistics
+
+### Golden Record Structure
+
+```csv
+Record_ID,first_name,last_name,address,similar_record_ids,logic,confidence_score,unique_id
+1,John,Smith,123 Main St,"1|2|3",priority_is_verified,0.95,abc123def456
+```
+
+### Review Pairs Structure
+
+```csv
+pair_id,record_id_1,record_id_2,similarity_score,firstname_sim,lastname_sim,record1_first_name,record2_first_name,...
+1_2,1,2,0.75,0.8,0.9,John,Jon,...
+```
+
+## 🚀 Performance Optimization
+
+### Memory Optimization
+- **Chunked Processing**: Process large datasets in memory-efficient chunks
+- **Vectorized Operations**: NumPy/Pandas optimized operations
+- **Smart Caching**: LRU caching for repeated similarity computations
+
+### CPU Optimization  
+- **Parallel Processing**: Multi-core similarity computation
+- **Numba JIT**: Just-in-time compilation for critical loops
+- **Batch Operations**: Vectorized similarity calculations
+
+### I/O Optimization
+- **Connection Pooling**: Reuse database connections
+- **Bulk Operations**: Batch database reads/writes
+- **Compression**: Efficient data transfer and storage
+
+## 🔍 Troubleshooting
+
+### Common Issues
+
+**1. Database Connection Errors**
+```bash
+# Test connection first
+easymdm test-connection --config config.yaml
+
+# Check driver installation for SQL Server
+pip install pyodbc
+# Install Microsoft ODBC Driver 17 for SQL Server
+```
+
+**2. Memory Issues with Large Datasets**
+```yaml
+# Reduce batch size
+batch_size: 10000
+
+# Enable chunking
+options:
+  use_chunking: true
+  chunk_size: 25000
+```
+
+**3. Slow Similarity Computation**
+```bash
+# Benchmark methods to find optimal algorithms
+easymdm benchmark --config config.yaml --type similarity
+
+# Optimize blocking to reduce candidate pairs
+blocking:
+  method: exact  # Try exact blocking first
+  threshold: 0.9  # Increase threshold for fuzzy blocking
+```
+
+## 📈 Comparison with Original EasyMDM
+
+| Feature | Original EasyMDM | EasyMDM Advanced |
+|---------|------------------|------------------|
+| **Databases** | CSV, SQLite, DuckDB | + PostgreSQL, SQL Server |
+| **Similarity Algorithms** | Basic Jaro-Winkler, Levenshtein | + Cosine, Jaccard, FuzzyWuzzy variants |
+| **Blocking Methods** | Fuzzy blocking only | + Exact, Sorted Neighborhood, RecordLinkage |
+| **Clustering** | Network-based only | + Hierarchical, DBSCAN |
+| **Survivorship** | Basic priority + survivorship | + 8 advanced strategies |
+| **Performance** | Single-threaded | Multi-core, Numba JIT, vectorized |
+| **CLI** | Basic argparse | Rich UI, comprehensive commands |
+| **Configuration** | Simple YAML | + Validation, templates, type checking |
+| **Output** | Basic CSV | + Review pairs, detailed stats, multiple formats |
+| **Memory Handling** | Load all in memory | + Chunking, streaming, optimization |
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+### Development Setup
+
+```bash
+git clone https://github.com/yourusername/easymdm-advanced.git
+cd easymdm-advanced
+
+# Install in development mode
+pip install -e ".[dev]"
+
+# Run tests
+pytest
+
+# Code formatting
+black easymdm/
+flake8 easymdm/
+
+# Type checking
+mypy easymdm/
+```
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+- **Documentation**: [Full documentation](https://easymdm-advanced.readthedocs.io)
+- **Issues**: [GitHub Issues](https://github.com/yourusername/easymdm-advanced/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/yourusername/easymdm-advanced/discussions)
+- **Email**: support@easymdm-advanced.com
+
+## 🙏 Acknowledgments
+
+- Built on top of the excellent `recordlinkage` library
+- Inspired by the original EasyMDM package
+- Uses `pandas`, `numpy`, and `scikit-learn` for data processing
+- UI powered by `rich` for beautiful console output
+
+---
+
+**EasyMDM Advanced** - Making Master Data Management Simple and Powerful 🚀

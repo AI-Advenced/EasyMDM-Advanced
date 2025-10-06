@@ -1,0 +1,179 @@
+# EasyMDM Advanced Configuration - PostgreSQL Template
+# This template provides a complete configuration example for PostgreSQL data sources
+
+# Data Source Configuration
+source:
+  type: postgresql
+  host: localhost
+  port: 5432
+  database: mydb
+  username: your_username
+  password: your_password
+  schema: public
+  table: customer_records
+  options:
+    # Additional connection options
+    connect_timeout: 30
+    application_name: "EasyMDM"
+
+# Blocking Configuration
+# Defines how to generate candidate pairs for comparison
+blocking:
+  columns:
+    - firstname
+    - lastname
+  method: fuzzy  # Options: exact, fuzzy, sorted_neighbourhood, recordlinkage
+  threshold: 0.8  # For fuzzy blocking
+  window_size: 10  # For sorted neighbourhood
+  options:
+    similarity_method: jaro_winkler  # For fuzzy blocking
+    separator: " "  # For concatenating blocking columns
+
+# Similarity Computation Configuration
+# Define how to compute similarity for each column
+similarity:
+  - column: firstname
+    method: jarowinkler
+    weight: 2.0
+    threshold: 0.7
+    options:
+      lowercase: true
+      remove_punctuation: false
+
+  - column: lastname
+    method: jarowinkler
+    weight: 2.0
+    threshold: 0.7
+    options:
+      lowercase: true
+
+  - column: address
+    method: levenshtein
+    weight: 1.5
+    threshold: 0.6
+    options:
+      lowercase: true
+      remove_extra_spaces: true
+
+  - column: city
+    method: exact
+    weight: 1.0
+    threshold: 1.0
+    options:
+      lowercase: true
+
+  - column: zip
+    method: exact
+    weight: 1.0
+    threshold: 1.0
+
+  - column: phone
+    method: levenshtein
+    weight: 1.0
+    threshold: 0.8
+    options:
+      remove_punctuation: true
+
+  - column: email
+    method: exact
+    weight: 1.5
+    threshold: 1.0
+    options:
+      lowercase: true
+
+# Threshold Configuration for Match Classification
+thresholds:
+  review: 0.7           # Pairs with score >= 0.7 require manual review
+  auto_merge: 0.9       # Pairs with score >= 0.9 are automatically merged
+  definite_no_match: 0.3  # Pairs with score <= 0.3 are definite non-matches
+
+# Survivorship Rules Configuration
+# Define how to resolve conflicts when merging records
+survivorship:
+  rules:
+    - column: last_updated
+      strategy: most_recent
+      options:
+        date_format: "%Y-%m-%d %H:%M:%S"
+
+    - column: source
+      strategy: source_priority
+      source_order:
+        - "CRM_SYSTEM"
+        - "ERP_SYSTEM" 
+        - "MANUAL_ENTRY"
+        - "IMPORT"
+
+    - column: address
+      strategy: longest_string
+
+    - column: phone
+      strategy: longest_string
+
+    - column: email
+      strategy: source_priority
+      source_order:
+        - "CRM_SYSTEM"
+        - "ERP_SYSTEM"
+        - "MANUAL_ENTRY"
+
+    - column: confidence_score
+      strategy: highest_value
+
+    - column: verification_status
+      strategy: source_priority
+      source_order:
+        - "VERIFIED"
+        - "PENDING"
+        - "UNVERIFIED"
+
+# Priority Rules Configuration
+# Define priority conditions for selecting trusted records
+priority_rule:
+  conditions:
+    - column: is_verified
+      value: true
+      priority: 1
+
+    - column: data_quality_score
+      value: 100
+      priority: 2
+
+    - column: source
+      value: "CRM_SYSTEM"
+      priority: 3
+
+# Unique ID Configuration
+# Define columns to use for generating unique identifiers
+unique_id:
+  columns:
+    - firstname
+    - lastname
+    - birthdate
+
+# Output Configuration
+output_path: ./mdm_output
+
+# Performance Configuration
+batch_size: 10000        # Number of records to process in each batch
+n_jobs: -1              # Number of parallel jobs (-1 = all available cores)
+use_multiprocessing: true
+
+# Logging Configuration
+log_level: INFO          # DEBUG, INFO, WARNING, ERROR, CRITICAL
+log_file: mdm_processing.log
+
+# Additional Options
+options:
+  # Custom options for specific use cases
+  export_similarities: true    # Export detailed similarity scores
+  export_review_pairs: true    # Export pairs requiring manual review
+  generate_statistics: true    # Generate detailed processing statistics
+  
+  # Memory optimization
+  use_chunking: true          # Process data in chunks for large datasets
+  chunk_size: 50000           # Size of each chunk
+  
+  # Quality thresholds
+  min_similarity_threshold: 0.1  # Skip pairs below this threshold
+  max_pairs_per_record: 100      # Limit pairs per record for performance

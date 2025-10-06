@@ -1,0 +1,32 @@
+# Core dependencies
+pandas>=1.5.0
+numpy>=1.21.0
+pyyaml>=6.0
+networkx>=2.8
+
+# Record linkage and similarity
+recordlinkage>=0.15.0
+fuzzywuzzy>=0.18.0
+python-Levenshtein>=0.12.2
+jellyfish>=0.9.0
+textdistance>=4.5.0
+
+# Database connectors
+sqlalchemy>=1.4.0
+psycopg2-binary>=2.9.0  # PostgreSQL
+pyodbc>=4.0.30         # SQL Server
+duckdb>=0.8.0          # DuckDB
+
+# Performance and utilities
+tqdm>=4.64.0
+joblib>=1.2.0
+numba>=0.56.0
+scikit-learn>=1.1.0
+
+# Data validation
+cerberus>=1.3.4
+jsonschema>=4.17.0
+
+# Logging and monitoring
+colorlog>=6.7.0
+rich>=13.0.0

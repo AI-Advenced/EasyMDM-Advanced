@@ -1,0 +1,177 @@
+# EasyMDM Advanced Configuration - CSV Template
+# This template provides a complete configuration example for CSV data sources
+
+# Data Source Configuration
+source:
+  type: csv
+  file_path: ./data/customer_records.csv
+  options:
+    # CSV reading options (pandas read_csv parameters)
+    encoding: utf-8
+    delimiter: ","
+    header: 0
+    na_values: ["", "NULL", "null", "N/A", "n/a"]
+    keep_default_na: true
+    skip_blank_lines: true
+    # For large files
+    # chunksize: 10000
+    # nrows: 100000  # Limit rows for testing
+
+# Blocking Configuration
+blocking:
+  columns:
+    - first_name
+    - last_name
+  method: exact  # CSV files often work well with exact blocking first
+  threshold: 0.8
+  options:
+    separator: " "
+
+# Similarity Configuration  
+similarity:
+  - column: first_name
+    method: jarowinkler
+    weight: 2.0
+    threshold: 0.7
+    options:
+      lowercase: true
+      remove_extra_spaces: true
+
+  - column: last_name
+    method: jarowinkler
+    weight: 2.0
+    threshold: 0.7
+    options:
+      lowercase: true
+
+  - column: address
+    method: cosine
+    weight: 1.5
+    threshold: 0.6
+    options:
+      ngram_range: 2
+      lowercase: true
+
+  - column: city
+    method: fuzzy_token_sort
+    weight: 1.0
+    threshold: 0.8
+    options:
+      lowercase: true
+
+  - column: state
+    method: exact
+    weight: 1.0
+    options:
+      lowercase: true
+
+  - column: zip_code
+    method: exact
+    weight: 1.0
+
+  - column: phone
+    method: levenshtein
+    weight: 1.0
+    threshold: 0.8
+    options:
+      remove_punctuation: true
+
+  - column: email
+    method: exact
+    weight: 1.5
+    options:
+      lowercase: true
+
+# Thresholds
+thresholds:
+  review: 0.75
+  auto_merge: 0.85
+  definite_no_match: 0.25
+
+# Survivorship Rules
+survivorship:
+  rules:
+    - column: date_updated
+      strategy: most_recent
+
+    - column: source_system
+      strategy: source_priority
+      source_order:
+        - "primary"
+        - "secondary"
+        - "imported"
+        - "manual"
+
+    - column: address
+      strategy: longest_string
+
+    - column: phone
+      strategy: longest_string
+
+    - column: email
+      strategy: most_frequent
+
+    - column: confidence_level
+      strategy: highest_value
+
+    - column: verification_date
+      strategy: most_recent
+
+# Priority Rules
+priority_rule:
+  conditions:
+    - column: is_verified
+      value: true
+      priority: 1
+
+    - column: confidence_level
+      value: "high"
+      priority: 2
+
+    - column: source_system
+      value: "primary"
+      priority: 3
+
+# Unique ID Generation
+unique_id:
+  columns:
+    - first_name
+    - last_name
+    - birth_date
+
+# Output Configuration
+output_path: ./output
+
+# Performance Configuration
+batch_size: 20000        # CSV can handle larger batches
+n_jobs: -1              # Use all available cores
+use_multiprocessing: true
+
+# Logging
+log_level: INFO
+log_file: ./logs/mdm_processing.log
+
+# CSV-Specific Options
+options:
+  # Output formats
+  export_to_csv: true
+  export_to_excel: false
+  export_to_json: false
+  
+  # CSV export options
+  csv_encoding: utf-8
+  csv_separator: ","
+  csv_quoting: 1  # QUOTE_ALL
+  
+  # Data cleaning options
+  clean_whitespace: true
+  standardize_case: true
+  remove_duplicates_first: false  # Let MDM handle duplicates
+  
+  # Memory optimization for large CSV files
+  use_chunking: true
+  chunk_size: 50000
+  
+  # Progress reporting
+  show_progress: true
+  progress_interval: 1000

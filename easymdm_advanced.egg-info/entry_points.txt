@@ -1,0 +1,4 @@
+[console_scripts]
+easymdm = easymdm.cli:main
+easymdm-config = easymdm.config_generator:main
+easymdm-monitor = easymdm.monitor:main

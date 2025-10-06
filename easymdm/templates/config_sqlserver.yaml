@@ -1,0 +1,173 @@
+# EasyMDM Advanced Configuration - SQL Server Template
+# This template provides a complete configuration example for SQL Server data sources
+
+# Data Source Configuration
+source:
+  type: sqlserver
+  host: localhost
+  port: 1433
+  database: CustomerDB
+  username: your_username
+  password: your_password
+  schema: dbo
+  table: Customers
+  # Alternative: use connection string directly
+  # connection_string: "mssql+pyodbc://user:password@server/database?driver=ODBC+Driver+17+for+SQL+Server"
+  options:
+    driver: "ODBC Driver 17 for SQL Server"
+    trust_server_certificate: "yes"
+    connection_timeout: 30
+
+# Blocking Configuration
+blocking:
+  columns:
+    - FirstName
+    - LastName
+  method: fuzzy
+  threshold: 0.8
+  options:
+    similarity_method: jaro_winkler
+    separator: " "
+
+# Similarity Configuration
+similarity:
+  - column: FirstName
+    method: jarowinkler
+    weight: 2.0
+    threshold: 0.7
+    options:
+      lowercase: true
+
+  - column: LastName
+    method: jarowinkler
+    weight: 2.0
+    threshold: 0.7
+    options:
+      lowercase: true
+
+  - column: Address
+    method: cosine
+    weight: 1.5
+    threshold: 0.6
+    options:
+      ngram_range: 2
+
+  - column: City
+    method: exact
+    weight: 1.0
+    options:
+      lowercase: true
+
+  - column: State
+    method: exact
+    weight: 1.0
+    options:
+      lowercase: true
+
+  - column: ZipCode
+    method: exact
+    weight: 1.0
+
+  - column: Phone
+    method: levenshtein
+    weight: 1.0
+    threshold: 0.8
+    options:
+      remove_punctuation: true
+
+  - column: Email
+    method: exact
+    weight: 1.5
+    options:
+      lowercase: true
+
+  - column: SSN
+    method: exact
+    weight: 3.0  # High weight for unique identifiers
+
+# Thresholds
+thresholds:
+  review: 0.7
+  auto_merge: 0.9
+  definite_no_match: 0.3
+
+# Survivorship Rules
+survivorship:
+  rules:
+    - column: LastModified
+      strategy: most_recent
+
+    - column: DataSource
+      strategy: source_priority
+      source_order:
+        - "MASTER_SYSTEM"
+        - "CRM"
+        - "BILLING"
+        - "SUPPORT"
+
+    - column: Address
+      strategy: longest_string
+
+    - column: Phone
+      strategy: source_priority
+      source_order:
+        - "MASTER_SYSTEM"
+        - "CRM"
+
+    - column: Email
+      strategy: most_frequent
+
+    - column: QualityScore
+      strategy: highest_value
+
+# Priority Rules
+priority_rule:
+  conditions:
+    - column: IsVerified
+      value: 1  # SQL Server bit field
+      priority: 1
+
+    - column: QualityScore
+      value: 100
+      priority: 2
+
+    - column: DataSource
+      value: "MASTER_SYSTEM"
+      priority: 3
+
+# Unique ID
+unique_id:
+  columns:
+    - FirstName
+    - LastName
+    - DateOfBirth
+
+# Output Configuration
+output_path: C:\\MDM_Output
+
+# Performance Settings
+batch_size: 5000         # SQL Server may prefer smaller batches
+n_jobs: 4               # Conservative for SQL Server
+use_multiprocessing: false  # May cause connection issues
+
+# Logging
+log_level: INFO
+log_file: C:\\MDM_Logs\\processing.log
+
+# SQL Server Specific Options
+options:
+  # Connection pooling
+  pool_size: 10
+  max_overflow: 20
+  
+  # Query optimization
+  use_bulk_insert: true
+  fast_executemany: true
+  
+  # Memory management
+  use_chunking: true
+  chunk_size: 25000
+  
+  # SQL Server specific features
+  use_identity_insert: false
+  enable_snapshot_isolation: true

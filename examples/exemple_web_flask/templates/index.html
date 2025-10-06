@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyMDM Advanced - Interface Web</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .main-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin: 20px auto;
+            max-width: 1400px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin: 0;
+        }
+        
+        .section-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .section-title {
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            font-size: 1.5rem;
+            color: #4facfe;
+        }
+        
+        .btn-custom {
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+        
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(79, 172, 254, 0.3);
+            color: white;
+        }
+        
+        .btn-success-custom {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+        
+        .btn-success-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(17, 153, 142, 0.3);
+            color: white;
+        }
+        
+        .btn-warning-custom {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .btn-warning-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(240, 147, 251, 0.3);
+            color: white;
+        }
+        
+        .btn-info-custom {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+        
+        .btn-info-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(79, 172, 254, 0.3);
+            color: white;
+        }
+        
+        .form-control-custom {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control-custom:focus {
+            border-color: #4facfe;
+            box-shadow: 0 0 0 0.2rem rgba(79, 172, 254, 0.25);
+        }
+        
+        .file-upload-area {
+            border: 2px dashed #4facfe;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            background: rgba(79, 172, 254, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .file-upload-area:hover {
+            border-color: #00f2fe;
+            background: rgba(79, 172, 254, 0.1);
+        }
+        
+        .file-upload-area.dragover {
+            border-color: #00f2fe;
+            background: rgba(79, 172, 254, 0.15);
+            transform: scale(1.02);
+        }
+        
+        .progress-custom {
+            height: 8px;
+            border-radius: 10px;
+            background: #e9ecef;
+            overflow: hidden;
+        }
+        
+        .progress-bar-custom {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        
+        .log-container {
+            background: #1a1a1a;
+            color: #00ff00;
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            height: 400px;
+            overflow-y: auto;
+            line-height: 1.4;
+        }
+        
+        .log-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .log-container::-webkit-scrollbar-track {
+            background: #2a2a2a;
+            border-radius: 4px;
+        }
+        
+        .log-container::-webkit-scrollbar-thumb {
+            background: #4facfe;
+            border-radius: 4px;
+        }
+        
+        .file-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .example-card {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.1) 0%, rgba(0, 242, 254, 0.1) 100%);
+            border: 2px solid rgba(79, 172, 254, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .example-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(79, 172, 254, 0.2);
+            border-color: #4facfe;
+        }
+        
+        .example-card h5 {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .example-card p {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .status-en-cours {
+            background: rgba(255, 193, 7, 0.2);
+            color: #856404;
+        }
+        
+        .status-termine {
+            background: rgba(40, 167, 69, 0.2);
+            color: #155724;
+        }
+        
+        .status-erreur {
+            background: rgba(220, 53, 69, 0.2);
+            color: #721c24;
+        }
+        
+        .task-result {
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(56, 239, 125, 0.1) 100%);
+            border: 2px solid rgba(40, 167, 69, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .config-section {
+            background: rgba(248, 249, 250, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .spinner-custom {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .example-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-container {
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="main-container">
+            <!-- En-tête -->
+            <div class="header">
+                <h1><i class="bi bi-gear-wide-connected"></i> EasyMDM Advanced</h1>
+                <p>Interface Web Moderne pour la Gestion de Données Maître</p>
+            </div>
+            
+            <div class="p-4">
+                <!-- Section 1: Téléchargement de fichier -->
+                <div class="section-card">
+                    <h3 class="section-title">
+                        <i class="bi bi-cloud-upload"></i>
+                        Données d'entrée
+                    </h3>
+                    
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="file-upload-area" id="fileUploadArea">
+                                <i class="bi bi-cloud-upload" style="font-size: 3rem; color: #4facfe; margin-bottom: 15px;"></i>
+                                <h5>Glissez-déposez votre fichier CSV ici</h5>
+                                <p class="text-muted">ou cliquez pour sélectionner un fichier</p>
+                                <input type="file" id="fileInput" accept=".csv" style="display: none;">
+                            </div>
+                            
+                            <div id="fileInfo" class="file-info" style="display: none;">
+                                <h6><i class="bi bi-file-earmark-text"></i> Informations du fichier</h6>
+                                <div id="fileDetails"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <button class="btn btn-success-custom btn-custom w-100 mb-3" onclick="createSample()">
+                                <i class="bi bi-file-plus"></i> Créer un échantillon
+                            </button>
+                            <p class="text-muted small">Créez un fichier d'exemple pour tester l'application</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 2: Configuration -->
+                <div class="section-card" id="configSection" style="display: none;">
+                    <h3 class="section-title">
+                        <i class="bi bi-sliders"></i>
+                        Configuration MDM
+                    </h3>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="config-section">
+                                <h6><i class="bi bi-funnel"></i> Blocage</h6>
+                                <div class="mb-3">
+                                    <label class="form-label">Colonnes de blocage</label>
+                                    <input type="text" class="form-control form-control-custom" id="blockingColumns" value="first_name,last_name" placeholder="col1,col2,col3">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Méthode</label>
+                                    <select class="form-select form-control-custom" id="blockingMethod">
+                                        <option value="exact">Exact</option>
+                                        <option value="fuzzy">Flou</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="config-section">
+                                <h6><i class="bi bi-sliders2"></i> Seuils</h6>
+                                <div class="mb-3">
+                                    <label class="form-label">Seuil de révision: <span id="reviewValue">0.7</span></label>
+                                    <input type="range" class="form-range" id="reviewThreshold" min="0" max="1" step="0.1" value="0.7" oninput="updateSliderValue('reviewValue', this.value)">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Seuil de fusion auto: <span id="autoMergeValue">0.85</span></label>
+                                    <input type="range" class="form-range" id="autoMergeThreshold" min="0" max="1" step="0.1" value="0.85" oninput="updateSliderValue('autoMergeValue', this.value)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-3">
+                        <button class="btn btn-primary-custom btn-custom btn-lg" onclick="startProcessing()">
+                            <i class="bi bi-play-circle"></i> Lancer le traitement
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Section 3: Exemples prédéfinis -->
+                <div class="section-card">
+                    <h3 class="section-title">
+                        <i class="bi bi-collection"></i>
+                        Exemples prédéfinis
+                    </h3>
+                    
+                    <div class="example-grid">
+                        <div class="example-card" onclick="runExample(1)">
+                            <h5><i class="bi bi-file-text"></i> CSV Basique</h5>
+                            <p>Traitement CSV avec configuration minimale</p>
+                            <button class="btn btn-info-custom btn-custom btn-sm">Lancer</button>
+                        </div>
+                        
+                        <div class="example-card" onclick="runExample(2)">
+                            <h5><i class="bi bi-graph-up"></i> Similarité Avancée</h5>
+                            <p>Test des méthodes de similarité</p>
+                            <button class="btn btn-info-custom btn-custom btn-sm">Lancer</button>
+                        </div>
+                        
+                        <div class="example-card" onclick="runExample(3)">
+                            <h5><i class="bi bi-database"></i> PostgreSQL</h5>
+                            <p>Configuration base de données avancée</p>
+                            <button class="btn btn-info-custom btn-custom btn-sm">Lancer</button>
+                        </div>
+                        
+                        <div class="example-card" onclick="runExample(4)">
+                            <h5><i class="bi bi-speedometer2"></i> Performance</h5>
+                            <p>Optimisation pour jeux de données volumineux</p>
+                            <button class="btn btn-info-custom btn-custom btn-sm">Lancer</button>
+                        </div>
+                        
+                        <div class="example-card" onclick="runExample(5)">
+                            <h5><i class="bi bi-shield-check"></i> Survivance</h5>
+                            <p>Stratégies de survivance personnalisées</p>
+                            <button class="btn btn-info-custom btn-custom btn-sm">Lancer</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 4: Suivi des tâches -->
+                <div class="section-card" id="taskSection" style="display: none;">
+                    <h3 class="section-title">
+                        <i class="bi bi-activity"></i>
+                        Suivi du traitement
+                    </h3>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="status-badge" id="taskStatus">
+                                    <i class="bi bi-clock"></i> En attente
+                                </span>
+                                <div class="flex-grow-1">
+                                    <div class="progress-custom">
+                                        <div class="progress-bar-custom" id="progressBar" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                <span id="progressText">0%</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <button class="btn btn-warning-custom btn-custom btn-sm" id="stopBtn" onclick="stopTask()" style="display: none;">
+                                <i class="bi bi-stop-circle"></i> Arrêter
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="log-container" id="logContainer">
+                        <div class="text-center text-muted">
+                            <i class="bi bi-terminal"></i> Journal d'exécution
+                        </div>
+                    </div>
+                    
+                    <div id="taskResult" class="task-result" style="display: none;">
+                        <h5><i class="bi bi-check-circle"></i> Résultats du traitement</h5>
+                        <div id="resultDetails"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentTaskId = null;
+        let taskStatusInterval = null;
+        
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            setupFileUpload();
+        });
+        
+        // Configuration du téléchargement de fichier
+        function setupFileUpload() {
+            const fileUploadArea = document.getElementById('fileUploadArea');
+            const fileInput = document.getElementById('fileInput');
+            
+            fileUploadArea.addEventListener('click', () => fileInput.click());
+            
+            fileUploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                fileUploadArea.classList.add('dragover');
+            });
+            
+            fileUploadArea.addEventListener('dragleave', () => {
+                fileUploadArea.classList.remove('dragover');
+            });
+            
+            fileUploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                fileUploadArea.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFileUpload(files[0]);
+                }
+            });
+            
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFileUpload(e.target.files[0]);
+                }
+            });
+        }
+        
+        // Gérer le téléchargement de fichier
+        function handleFileUpload(file) {
+            if (!file.name.toLowerCase().endsWith('.csv')) {
+                alert('Seuls les fichiers CSV sont acceptés');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showFileInfo(data.file_info);
+                    document.getElementById('configSection').style.display = 'block';
+                    document.getElementById('configSection').classList.add('fade-in');
+                } else {
+                    alert('Erreur: ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('Erreur lors du téléchargement: ' + error);
+            });
+        }
+        
+        // Afficher les informations du fichier
+        function showFileInfo(fileInfo) {
+            const fileInfoDiv = document.getElementById('fileInfo');
+            const fileDetails = document.getElementById('fileDetails');
+            
+            fileDetails.innerHTML = `
+                <div class="row">
+                    <div class="col-md-3"><strong>Nom:</strong> ${fileInfo.filename}</div>
+                    <div class="col-md-3"><strong>Lignes:</strong> ${fileInfo.rows.toLocaleString()}</div>
+                    <div class="col-md-3"><strong>Colonnes:</strong> ${fileInfo.columns.length}</div>
+                    <div class="col-md-3"><strong>Taille:</strong> ${(fileInfo.size / 1024).toFixed(1)} KB</div>
+                </div>
+                <div class="mt-2"><strong>Colonnes disponibles:</strong> ${fileInfo.columns.join(', ')}</div>
+            `;
+            
+            fileInfoDiv.style.display = 'block';
+            fileInfoDiv.classList.add('fade-in');
+        }
+        
+        // Créer un échantillon
+        function createSample() {
+            fetch('/create_sample')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showFileInfo(data.file_info);
+                    document.getElementById('configSection').style.display = 'block';
+                    document.getElementById('configSection').classList.add('fade-in');
+                } else {
+                    alert('Erreur: ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('Erreur: ' + error);
+            });
+        }
+        
+        // Lancer le traitement
+        function startProcessing() {
+            const config = {
+                blocking_columns: document.getElementById('blockingColumns').value,
+                blocking_method: document.getElementById('blockingMethod').value,
+                review_threshold: parseFloat(document.getElementById('reviewThreshold').value),
+                auto_merge_threshold: parseFloat(document.getElementById('autoMergeThreshold').value)
+            };
+            
+            fetch('/start_processing', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(config)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    currentTaskId = data.task_id;
+                    showTaskSection();
+                    startTaskMonitoring();
+                } else {
+                    alert('Erreur: ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('Erreur: ' + error);
+            });
+        }
+        
+        // Lancer un exemple
+        function runExample(exampleId) {
+            fetch(`/run_example/${exampleId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    currentTaskId = data.task_id;
+                    showTaskSection();
+                    startTaskMonitoring();
+                } else {
+                    alert('Erreur: ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('Erreur: ' + error);
+            });
+        }
+        
+        // Afficher la section des tâches
+        function showTaskSection() {
+            document.getElementById('taskSection').style.display = 'block';
+            document.getElementById('taskSection').classList.add('fade-in');
+            document.getElementById('stopBtn').style.display = 'inline-block';
+            updateTaskStatus('en_cours', 0);
+            clearLog();
+        }
+        
+        // Démarrer le suivi des tâches
+        function startTaskMonitoring() {
+            if (taskStatusInterval) {
+                clearInterval(taskStatusInterval);
+            }
+            
+            taskStatusInterval = setInterval(() => {
+                if (currentTaskId) {
+                    checkTaskStatus();
+                }
+            }, 1000);
+        }
+        
+        // Vérifier le statut de la tâche
+        function checkTaskStatus() {
+            fetch(`/task_status/${currentTaskId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const task = data.task;
+                    updateTaskStatus(task.status, task.progress);
+                    updateLogs(task.logs);
+                    
+                    if (task.status === 'termine') {
+                        showTaskResult(task.result);
+                        stopTaskMonitoring();
+                    } else if (task.status === 'erreur') {
+                        stopTaskMonitoring();
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors de la vérification du statut:', error);
+            });
+        }
+        
+        // Mettre à jour le statut de la tâche
+        function updateTaskStatus(status, progress) {
+            const statusElement = document.getElementById('taskStatus');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            
+            // Mettre à jour le statut
+            statusElement.className = 'status-badge status-' + status;
+            
+            switch(status) {
+                case 'en_cours':
+                    statusElement.innerHTML = '<div class="spinner-custom"></div> En cours';
+                    break;
+                case 'termine':
+                    statusElement.innerHTML = '<i class="bi bi-check-circle"></i> Terminé';
+                    document.getElementById('stopBtn').style.display = 'none';
+                    break;
+                case 'erreur':
+                    statusElement.innerHTML = '<i class="bi bi-x-circle"></i> Erreur';
+                    document.getElementById('stopBtn').style.display = 'none';
+                    break;
+                case 'arrete':
+                    statusElement.innerHTML = '<i class="bi bi-stop-circle"></i> Arrêté';
+                    document.getElementById('stopBtn').style.display = 'none';
+                    break;
+            }
+            
+            // Mettre à jour la progression
+            progressBar.style.width = progress + '%';
+            progressText.textContent = Math.round(progress) + '%';
+        }
+        
+        // Mettre à jour les logs
+        function updateLogs(logs) {
+            const logContainer = document.getElementById('logContainer');
+            
+            if (logs && logs.length > 0) {
+                logContainer.innerHTML = logs.join('\n');
+                logContainer.scrollTop = logContainer.scrollHeight;
+            }
+        }
+        
+        // Effacer les logs
+        function clearLog() {
+            const logContainer = document.getElementById('logContainer');
+            logContainer.innerHTML = '<div class="text-center text-muted"><i class="bi bi-terminal"></i> Journal d\'exécution</div>';
+        }
+        
+        // Afficher les résultats
+        function showTaskResult(result) {
+            if (!result) return;
+            
+            const resultDiv = document.getElementById('taskResult');
+            const resultDetails = document.getElementById('resultDetails');
+            
+            let resultHtml = '<div class="row">';
+            
+            if (result.input_records) {
+                resultHtml += `<div class="col-md-3"><strong>Entrées:</strong> ${result.input_records.toLocaleString()}</div>`;
+            }
+            if (result.golden_records) {
+                resultHtml += `<div class="col-md-3"><strong>Dorés:</strong> ${result.golden_records.toLocaleString()}</div>`;
+            }
+            if (result.execution_time) {
+                resultHtml += `<div class="col-md-3"><strong>Temps:</strong> ${result.execution_time.toFixed(2)}s</div>`;
+            }
+            if (result.memory_usage) {
+                resultHtml += `<div class="col-md-3"><strong>Mémoire:</strong> ${result.memory_usage}</div>`;
+            }
+            
+            resultHtml += '</div>';
+            
+            if (result.output_files && result.output_files.length > 0) {
+                resultHtml += `<div class="mt-3"><strong>Fichiers générés:</strong> ${result.output_files.join(', ')}</div>`;
+            }
+            
+            resultDetails.innerHTML = resultHtml;
+            resultDiv.style.display = 'block';
+            resultDiv.classList.add('fade-in');
+        }
+        
+        // Arrêter la tâche
+        function stopTask() {
+            if (currentTaskId) {
+                fetch(`/stop_task/${currentTaskId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        updateTaskStatus('arrete', 0);
+                        stopTaskMonitoring();
+                    }
+                });
+            }
+        }
+        
+        // Arrêter le suivi des tâches
+        function stopTaskMonitoring() {
+            if (taskStatusInterval) {
+                clearInterval(taskStatusInterval);
+                taskStatusInterval = null;
+            }
+        }
+        
+        // Mettre à jour la valeur des sliders
+        function updateSliderValue(elementId, value) {
+            document.getElementById(elementId).textContent = value;
+        }
+    </script>
+</body>
+</html>
